@@ -35,6 +35,9 @@ def new_contract(price):
 def property_insurance(price):
     return render_template('contracts/property_insurance.html', price='pro')
 
+@server.route('/contracts/cases',methods=['GET'])
+def cases():
+    return render_template('contracts/insurance_case.html')
 @server.route('/contact', methods=['GET'])
 def contact():
     return render_template('contact.html')
