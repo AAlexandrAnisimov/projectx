@@ -1,1 +1,1 @@
-APP_URL = "https://projectzxc.herokuapp.com/"
+APP_URL = "https://qwerty123.herokuapp.com/"
