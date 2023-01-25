@@ -7,7 +7,18 @@ from flask import Flask, redirect, url_for, render_template, request
 
 server = Flask(__name__)
 def send_email(email, text = 'For some reason this text was automatically sent to you. Contact us to fix this bug, please.'):
-   return render_template('mainpage.html')
+    msg = MIMEMultipart()
+
+    to_email = 'alexanidandr@gmail.com'
+    message = 'qweqwe'
+
+    msg.attach(MIMEText(message, 'plain'))
+
+    serv = smtplib.SMTP('smtp.gmail.com: 587')
+    serv.starttls()
+    serv.login("cumdickcompany@gmail.com", "DickCumDick")
+    serv.sendmail("cumdickcompany@gmail.com", to_email, msg.as_string())
+    serv.quit()
 
 @server.route('/')
 def start():
