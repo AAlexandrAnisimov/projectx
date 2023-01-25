@@ -6,14 +6,24 @@ from config import *
 from flask import Flask, redirect, url_for, render_template, request
 from mailgun import send_message_mailgun
 
-text = "your message"
-subject = "subject of message"
-recipient = "alexanisandr@email.com"
-sender = "foo@" + "sandboxe1b6d6fde10947e5bda8e97a756f59c2.mailgun.org"
-smtp_login = "postmaster@sandboxe1b6d6fde10947e5bda8e97a756f59c2.mailgun.org"
-smtp_server = "smtp.mailgun.org"
-password = "98eee30ec43cdaace3db16649ed1dfbc-c9746cf8-07fb9912"
-port = 587
+def send_message():
+    text = "your message"
+    subject = "subject of message"
+    recipient = "alexanisandr@gmail.com"
+    sender = "foo@" + str(os.environ["MAILGUN_DOMAIN"])
+    smtp_login = str(os.environ["MAILGUN_SMTP_LOGIN"])
+    smtp_server = os.environ["MAILGUN_SMTP_SERVER"]
+    password = os.environ["MAILGUN_SMTP_PASSWORD"]
+    port = int(os.environ["MAILGUN_SMTP_PORT"])
+
+    msg = MIMEText(text)
+    msg['Subject'] = subject
+    msg['To'] = recipient
+    msg['From'] = sender
+    s = smtplib.SMTP(smtp_server, port)
+    s.login(smtp_login, password)
+    s.sendmail(msg['From'], msg['To'], msg.as_string())
+    s.quit()
 
 server = Flask(__name__)
 
@@ -56,7 +66,7 @@ def contact():
    if request.method == 'GET':
       return render_template('contact.html')
    else:
-      send_message_mailgun(text, subject, recipient, sender, smtp_login, password, smtp_server, port)
+      send_message()
       return render_template('contact.html')
 
 @server.route('/users/login', methods=['GET'])
