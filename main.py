@@ -24,5 +24,9 @@ def cases():
 def form_health(price):
     return render_template('insurance/insurance_form.html', price=price)
 
+@server.route('/users/login', methods=['GET', 'POST'])
+def login():
+    return render_template('users/sign_in.html')
+
 if __name__ == '__main__':
     server.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
