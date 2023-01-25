@@ -1,6 +1,6 @@
 import os
 from config import *
-from flask import Flask, redirect, url_for, render_template
+from flask import Flask, redirect, url_for, render_template, request
 
 server = Flask(__name__)
 
@@ -19,6 +19,10 @@ def contacts():
 @server.route('/insurance/cases',methods=['GET'])
 def cases():
     return render_template('insurance/insurance_cases.html')
+
+@server.route('/insurance/<price>', methods=['GET', 'POST']) # Health
+def form_health(price):
+    return render_template('insurance/insurance_form.html', price=price)
 
 if __name__ == '__main__':
     server.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
