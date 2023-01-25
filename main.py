@@ -4,21 +4,18 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from config import *
 from flask import Flask, redirect, url_for, render_template, request
+from mailgun import send_message_mailgun
+
+text = "your message"
+subject = "subject of message"
+recipient = "alexanisandr@email.com"
+sender = "foo@" + str(os.environ["MAILGUN_DOMAIN"])
+smtp_login = str(os.environ["MAILGUN_SMTP_LOGIN"])
+smtp_server = os.environ["MAILGUN_SMTP_SERVER"]
+password = os.environ["MAILGUN_SMTP_PASSWORD"]
+port = int(os.environ["MAILGUN_SMTP_PORT"])
 
 server = Flask(__name__)
-def send_email(email, text = 'For some reason this text was automatically sent to you. Contact us to fix this bug, please.'):
-    msg = MIMEMultipart()
-
-    to_email = 'alexanidandr@gmail.com'
-    message = 'qweqwe'
-
-    msg.attach(MIMEText(message, 'plain'))
-
-    serv = smtplib.SMTP('smtp.gmail.com: 587')
-    serv.starttls()
-    serv.login("cumdickcompany@gmail.com", "DickCumDick")
-    serv.sendmail("cumdickcompany@gmail.com", to_email, msg.as_string())
-    serv.quit()
 
 @server.route('/')
 def start():
@@ -60,7 +57,7 @@ def contact():
       return render_template('contact.html')
    else:
       text2 = "Question by: "+request.form['name']+ '\n'+request.form['text']+'\nR.S.V.P to ' +request.form['email']
-      send_email('alexanisandr@gmail.com', text=text2)
+      send_message_mailgun(text, subject, recipient, sender, smtp_login, password, smtp_server, port)
       return render_template('contact.html')
 
 @server.route('/users/login', methods=['GET'])
