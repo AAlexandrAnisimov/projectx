@@ -1,9 +1,26 @@
 import os
-
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 from config import *
-from flask import Flask, redirect, url_for, render_template
+from flask import Flask, redirect, url_for, render_template, request
 
 server = Flask(__name__)
+def send_email(email, text = 'For some reason this text was automatically sent to you. Contact us to fix this bug, please.'):
+   msg = MIMEMultipart()
+   msg['From'] = 'CumDickCompany'
+   msg['To'] = str(email)
+   msg['Subject'] = 'Insurance'
+
+   msg.attach(MIMEText(text, 'plain'))
+
+   text = msg.as_string()
+
+   server = smtplib.SMTP("smtp.gmail.com", 587)
+   server.starttls()
+   server.login("cumdickcompany@gmail.com", "DickCumDick")
+   server.sendmail("cumdickcompany@gmail.com", email, text)
+   return render_template('mainpage.html')
 
 @server.route('/')
 def start():
@@ -38,9 +55,16 @@ def property_insurance(price):
 @server.route('/contracts/cases',methods=['GET'])
 def cases():
     return render_template('contracts/insurance_case.html')
-@server.route('/contact', methods=['GET'])
+
+@server.route('/contact', methods=['GET', 'POST'])
 def contact():
-    return render_template('contact.html')
+   if request.method == 'GET':
+      return render_template('contact.html')
+   else:
+      text2 = "Question by: "+request.form['name']+ '\n'+request.form['text']+'\nR.S.V.P to ' +request.form['email']
+      send_email('8889344@ukr.net', text=text2)
+      return render_template('contact.html')
+   
 @server.route('/users/login', methods=['GET'])
 def login():
     return render_template('users/sign_in.html')
