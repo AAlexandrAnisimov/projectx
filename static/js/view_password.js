@@ -1,9 +1,6 @@
 function myFunction(y) {
   var x = document.getElementById("myInput");
-  if (x.type === "password") {
-    x.type = "text";
-  } else {
-    x.type = "password";
-  }
+  x.type = (x.type === "password") ? "text" : "password"
+
   y.classList.toggle("fa-eye-slash");
 }
