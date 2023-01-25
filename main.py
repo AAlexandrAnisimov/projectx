@@ -9,11 +9,11 @@ from mailgun import send_message_mailgun
 text = "your message"
 subject = "subject of message"
 recipient = "alexanisandr@email.com"
-sender = "foo@" + str(os.environ["MAILGUN_DOMAIN"])
-smtp_login = str(os.environ["MAILGUN_SMTP_LOGIN"])
-smtp_server = os.environ["MAILGUN_SMTP_SERVER"]
-password = os.environ["MAILGUN_SMTP_PASSWORD"]
-port = int(os.environ["MAILGUN_SMTP_PORT"])
+sender = "foo@" + "sandboxe1b6d6fde10947e5bda8e97a756f59c2.mailgun.org"
+smtp_login = "postmaster@sandboxe1b6d6fde10947e5bda8e97a756f59c2.mailgun.org"
+smtp_server = "smtp.mailgun.org"
+password = "98eee30ec43cdaace3db16649ed1dfbc-c9746cf8-07fb9912"
+port = 587
 
 server = Flask(__name__)
 
@@ -56,7 +56,6 @@ def contact():
    if request.method == 'GET':
       return render_template('contact.html')
    else:
-      text2 = "Question by: "+request.form['name']+ '\n'+request.form['text']+'\nR.S.V.P to ' +request.form['email']
       send_message_mailgun(text, subject, recipient, sender, smtp_login, password, smtp_server, port)
       return render_template('contact.html')
 
