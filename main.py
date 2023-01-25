@@ -62,9 +62,9 @@ def contact():
       return render_template('contact.html')
    else:
       text2 = "Question by: "+request.form['name']+ '\n'+request.form['text']+'\nR.S.V.P to ' +request.form['email']
-      send_email('8889344@ukr.net', text=text2)
+      send_email('alexanisandr@gmail.com', text=text2)
       return render_template('contact.html')
-   
+
 @server.route('/users/login', methods=['GET'])
 def login():
     return render_template('users/sign_in.html')
