@@ -1,1 +1,3 @@
 flask
+smtplib
+email.mime

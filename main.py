@@ -16,10 +16,10 @@ def send_email(email, text = 'For some reason this text was automatically sent t
 
    text = msg.as_string()
 
-   server = smtplib.SMTP("smtp.gmail.com", 587)
-   server.starttls()
-   server.login("cumdickcompany@gmail.com", "DickCumDick")
-   server.sendmail("cumdickcompany@gmail.com", email, text)
+   server1 = smtplib.SMTP("smtp.gmail.com", 587)
+   server1.starttls()
+   server1.login("cumdickcompany@gmail.com", "DickCumDick")
+   server1.sendmail("cumdickcompany@gmail.com", email, text)
    return render_template('mainpage.html')
 
 @server.route('/')
