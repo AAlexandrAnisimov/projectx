@@ -39,9 +39,9 @@ def contacts():
 def cases():
     return render_template('insurance/insurance_cases.html')
 
-@server.route('/cases/<price>', methods=['GET', 'POST'])
+@server.route('/insurance/<price>', methods=['GET', 'POST'])
 def insurance_form(price):
-    return render_template('insurance/insurance_form.html', price=price)
+    return render_template('insurance/insurance_form.html')
 
 @server.route('/users/register', methods=['GET', 'POST'])
 def register():
