@@ -8,7 +8,8 @@
     <title>Insurance cases</title>
   </head>
   <body>
-         {%include 'nav.html' %}
+
+  {%include 'nav.html' %}
 
          <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 bg-light">
             <h1 class="display-4 font-weight-normal text-center">Страхування життя у <strong>LIFE<em>X</em></strong></h1>
@@ -28,7 +29,7 @@
                     </div>
                     <div class="col-sm-4">
                       <i class="fa fa-money fa-2x text-secondary" aria-hidden="true"></i>
-                      <h4>Сума, на яку ви можете бути застраховані</h4><hr>
+                      <h4>Сума страхування</h4><hr>
                       <h5>до 200 т. грн.</h5>
                     </div>
                   </div>
@@ -38,7 +39,7 @@
             <section class="pricing py-5">
               <div class="container">
                 <div class="row">
-                  <!-- Free Tier -->
+                  <!-- Light Tier -->
                   <div class="col-lg-4">
                     <div class="card mb-5 mb-lg-0">
                       <div class="card-body">
@@ -56,13 +57,11 @@
                           <li class="text-muted"><span class="fa-li"><i class="fa fa-times"></i></span>Екстрена стоматологічна допомога</li>
                           <li class="text-muted"><span class="fa-li"><i class="fa fa-times"></i></span>Розширена урологія та гінекологія</li>
                         </ul>
-
-                        <a href="{{url_for('form_health', price='light')}}" class="btn btn-block btn-primary text-uppercase">Оформити</a>
-
+                        <a class="btn btn-block btn-primary text-uppercase">Оформити</a>
                       </div>
                     </div>
                   </div>
-                  <!-- Plus Tier -->
+                  <!-- Optimum Tier -->
                   <div class="col-lg-4">
                     <div class="card mb-5 mb-lg-0">
                       <div class="card-body">
@@ -80,13 +79,11 @@
                           <li><span class="fa-li"><i class="fa fa-check"></i></span>Екстрена стоматологічна допомога</li>
                           <li class="text-muted"><span class="fa-li"><i class="fa fa-times"></i></span>Розширена урологія та гінекологія</li>
                         </ul>
-
-                        <a href="{{url_for('form_health', price='optimum')}}" class="btn btn-block btn-primary text-uppercase">Оформити</a>
-
+                        <a class="btn btn-block btn-primary text-uppercase">Оформити</a>
                       </div>
                     </div>
                   </div>
-                  <!-- Pro Tier -->
+                  <!-- Premium Tier -->
                   <div class="col-lg-4">
                     <div class="card">
                       <div class="card-body">
@@ -104,7 +101,7 @@
                           <li><span class="fa-li"><i class="fa fa-check"></i></span>Екстрена стоматологічна допомога</li>
                           <li><span class="fa-li"><i class="fa fa-check"></i></span>Розширена урологія та гінекологія</li>
                         </ul>
-                        <a href="{{url_for('form_health', price='premium')}}" class="btn btn-block btn-primary text-uppercase">Оформити</a>
+                        <a class="btn btn-block btn-primary text-uppercase">Оформити</a>
                       </div>
                     </div>
                   </div>
@@ -112,10 +109,7 @@
               </div>
             </section>
 
-
-
     {%include 'footer.html'%}
-
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>

@@ -1,16 +1,27 @@
 import os
-from config import *
-from flask import Flask, redirect, url_for, render_template, request, flash
+from config import Config
+from flask import Flask, redirect, url_for, render_template, request, flash, g, session
 import psycopg2
 import hashlib
 import datetime
-from db_connection import registration
 
 def to_sha(hash_string):
     sha_signature = hashlib.sha256(hash_string.encode()).hexdigest()
     return sha_signature
 
 server = Flask(__name__)
+server.config.from_object(Config)
+
+@server.before_request
+def before_request():
+    g.user_id = None
+    g.nickname = None
+    g.user_role = None
+
+    if ('user_id' in session) and ('nickname' in session) and ('role' in session):
+        g.user_id = session['user_id']
+        g.nickname = session['nickname']
+        g.user_role = session['role']
 
 @server.route('/')
 def home():
@@ -28,16 +39,18 @@ def contacts():
 def cases():
     return render_template('insurance/insurance_cases.html')
 
-@server.route('/users/login', methods=['GET', 'POST'])
-def login():
-    return render_template('users/sign_in.html')
+@server.route('/cases/<price>', methods=['GET', 'POST'])
+def insurance_form(price):
+    return render_template('insurance/insurance_form.html', price=price)
 
 @server.route('/users/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'GET':
         return render_template('users/registration.html')
     if request.method == 'POST':
-        connection = psycopg2.connect(SQLALCHEMY_DATABASE_URI, sslmode="require")
+        connection = psycopg2.connect(
+            server.config['SQLALCHEMY_DATABASE_URI']
+        )
         connection.autocommit = True
 
         name = request.form['name']
@@ -73,9 +86,58 @@ def register():
                 return render_template('homepage.html')
         else:
             connection.close()
+            flash('passwords are not match')
             return render_template('users/registration.html')
     else:
         redirect(url_for('homepage'))
+
+@server.route('/users/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('users/sign_in.html')
+    if request.method == 'POST':
+        session.pop('user_id', None)
+        session.pop('nickname', None)
+
+        connection = psycopg2.connect(
+            server.config['SQLALCHEMY_DATABASE_URI']
+        )
+        connection.autocommit = True
+
+        login_name = request.form['login']
+        password = to_sha(request.form['pass'])
+
+        cursor = connection.cursor()
+        cursor.callproc('login_customer', (login_name, password))
+
+        exit_code = cursor.fetchall()[0][0]
+        if exit_code != -1:
+            session['user_id'] = exit_code
+            session['nickname'] = login_name
+
+            cursor = connection.cursor()
+            cursor.execute(f"SELECT get_customer_info({session['user_id']})")
+
+            result = cursor.fetchall()[0]
+            (customer_id, full_name, age, email, login, passw, bank, role) = result[0][1:-1].split(',')
+
+            session['role'] = role
+
+            connection.close()
+            return redirect(url_for("homepage"))
+        else:
+            connection.close()
+            flash('There is no user with that login')
+            return render_template('users/sign_in.html')
+
+@server.route('/users/logout')
+def logout():
+    session.pop('user_id', None)
+    session.pop('nickname', None)
+    g.user_id = None
+    g.nickname = None
+
+    return render_template('homepage.html')
 
 if __name__ == '__main__':
     server.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
